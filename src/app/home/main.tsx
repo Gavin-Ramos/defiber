@@ -17,7 +17,7 @@ const ethers = require('ethers');
 import {decodeResult} from "@chainlink/functions-toolkit/dist/decodeResult.js";
 import {ReturnType} from "@chainlink/functions-toolkit/dist/types";
 import {ResponseListener} from "@chainlink/functions-toolkit/dist/ResponseListener";
-import {listenForResponseFromTransaction} from "@chainlink/functions-toolkit/dist/ResponseListener";
+//import {listenForResponseFromTransaction} from "@chainlink/functions-toolkit/dist/ResponseListener";
 
 //const functionsConsumerAbi = require("../smartContracts/abi/abi/payment2.json");
 //const ethers = require("ethers");
@@ -418,8 +418,7 @@ export const Main = () => {
     }
     setIsProductSaving(false)
   }
-  const _window = window
-  const provider = new ethers.BrowserProvider(_window.ethereum);
+
 
   return (
     <Column>
@@ -464,6 +463,8 @@ export const Main = () => {
             //const amount2 = ethers.utils.parseUnits(String(total), "mwei");
             //console.log("amount2",amount2);
             //before implementing this you need some type of reducer or something to track if the approve function has already been called
+            const _window: any = window;
+            const provider = new ethers.BrowserProvider(window.ethereum);
             const _accounts = await _window.ethereum.request({
               method: "eth_requestAccounts",
             })
@@ -483,7 +484,7 @@ export const Main = () => {
             console.log("payments= ", paymentSuccessful);
             console.log("responseBytes", responseBytes);
             const responseListener = new ResponseListener({
-              signer,
+              provider,
               functionsRouterAddress: routerAddress,
             });
 
