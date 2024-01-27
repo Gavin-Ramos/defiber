@@ -36,6 +36,7 @@ const POST = async (request: NextApiRequest, response: NextApiResponse) => {
   }
 
   // const fields = await JSON.parse(request.body)
+  
   const user = await verifyUser(request)
 
   if (!user) {

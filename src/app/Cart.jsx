@@ -9,6 +9,8 @@ import React, { useContext, useEffect } from "react"
 const ethers = require('ethers');
 import { US_STATE, US_STATE_OPTIONS, useAddress } from "@/hooks/useAddress"
 import { useAuth } from "@/hooks/useAuth"
+const abiPayments = require("../smartContracts/abi/abi/payment2.json")
+
 //------------------------------
 //const fs = require("fs");
 //const path = require("path");
@@ -26,7 +28,7 @@ import {listenForResponseFromTransaction} from "@chainlink/functions-toolkit/dis
 const functionsConsumerAbi = require("../smartContracts/abi/abi/payment2.json");
 //const ethers = require("ethers");
 
-const consumerAddress = "0xbf199a90cc6B4B9bfA483E9fBd92822F658e614d"; // REPLACE this with your Functions consumer address
+const consumerAddress = "0xB41a92BbAdB9DCe8b22D12F287a3e40a4af98685"; // REPLACE this with your Functions consumer address
 const subscriptionId = 50; // REPLACE this with your subscription ID
 const routerAddress = "0xdc2AAF042Aeff2E68B3e8E33F19e4B9fA7C73F10";
 const linkTokenAddress = "0xb0897686c545045aFc77CF20eC7A532E3120E0F1";
@@ -90,6 +92,7 @@ export const Cart = () => {
   const _window = window
 
   const onCheckout = async () => {
+    
     const response = await fetch(`${API_ROOT}/api/orders`, {
       method: 'POST',
       headers: {
@@ -108,7 +111,7 @@ export const Cart = () => {
         state,
         zip
       })
-    })
+    }) 
     //console.log("body", body);
     const responseData = await response.json();
     const order = responseData;
@@ -125,7 +128,7 @@ export const Cart = () => {
           quantity: item.quantity,
         }))}));
 const orderID = order.order.id;
-
+console.log("productId", order.order.summary[0].productId);
     // GAVIN'S CODE GOES HERE
   //   const client = await fetch('https://miby9omyy8.execute-api.us-east-1.amazonaws.com/default/return_js_as_string', {
   //   method: 'POST',
@@ -150,6 +153,8 @@ const orderID = order.order.id;
   //   .toString();
   // console.log("source.js ==",source);
   //const client = "const countryCode = ['JP'];\nconst url = \"https://countries.trevorblades.com/\";\nconst countryRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n  },\n  data: {\n    query: `{\\\n        country(code: \"${countryCode}\") { \\\n          name \\\n          capital \\\n          currency \\\n        } \\\n      }`,\n  },\n});\n\nconst countryResponse = await countryRequest;\nif (countryResponse.error) {\n  console.error(\n    countryResponse.response\n      ? `${countryResponse.response.status},${countryResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst countryData = countryResponse[\"data\"][\"data\"];\n\nif (!countryData || !countryData.country) {\n  throw Error(`Make sure the country code \"${countryCode}\" exists`);\n}\n\nconsole.log(\"country response\", countryData);\n\n// result is in JSON object\nconst result = {\n  name: countryData.country.name,\n  capital: countryData.country.capital,\n  currency: countryData.country.currency,\n};\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(result));\n";
+  console.log("productId", order.order.summary[0].productId);
+  const productID = order.order.summary[0].productId;
   const client = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\nconst orderId= args[0];\nconst amount= parseInt(args[1]);\nconsole.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markPaid\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n   },\n  data: {\"orderId\": orderId,\n  \"paymentAmount\" : amount}\n});\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n"
   console.log("client 0 first = ", client);
       const provider = new ethers.BrowserProvider(_window.ethereum);
@@ -182,517 +187,6 @@ const orderID = order.order.id;
       const USDTbalance = await USDT.balanceOf(accounts[0], );
       console.log("USDTbalance= ", USDTbalance);
 
-     const abiPayments = [
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "router",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "inputs": [],
-        "name": "EmptyArgs",
-        "type": "error"
-      },
-      {
-        "inputs": [],
-        "name": "EmptySecrets",
-        "type": "error"
-      },
-      {
-        "inputs": [],
-        "name": "EmptySource",
-        "type": "error"
-      },
-      {
-        "inputs": [],
-        "name": "NoInlineSecrets",
-        "type": "error"
-      },
-      {
-        "inputs": [],
-        "name": "OnlyRouterCanFulfill",
-        "type": "error"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "requestId",
-            "type": "bytes32"
-          }
-        ],
-        "name": "UnexpectedRequestID",
-        "type": "error"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          }
-        ],
-        "name": "OwnershipTransferRequested",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "bytes32",
-            "name": "id",
-            "type": "bytes32"
-          }
-        ],
-        "name": "RequestFulfilled",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "bytes32",
-            "name": "id",
-            "type": "bytes32"
-          }
-        ],
-        "name": "RequestSent",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "bytes32",
-            "name": "requestId",
-            "type": "bytes32"
-          },
-          {
-            "indexed": false,
-            "internalType": "bytes",
-            "name": "response",
-            "type": "bytes"
-          },
-          {
-            "indexed": false,
-            "internalType": "bytes",
-            "name": "err",
-            "type": "bytes"
-          }
-        ],
-        "name": "Response",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "_from",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "_to",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "_amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "paymentSuccessful",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "_address",
-            "type": "address"
-          },
-          {
-            "indexed": false,
-            "internalType": "bool",
-            "name": "_bool",
-            "type": "bool"
-          }
-        ],
-        "name": "tokenContractAllowed",
-        "type": "event"
-      },
-      {
-        "stateMutability": "payable",
-        "type": "fallback"
-      },
-      {
-        "inputs": [],
-        "name": "acceptOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "_token",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "_isAllowed",
-            "type": "bool"
-          }
-        ],
-        "name": "allowedStableCoinAddress",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "name": "allowedTokenAddress",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "name": "amountPaidByAddress",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "amountRequested",
-            "type": "bytes32"
-          }
-        ],
-        "name": "assignInputData",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "_token",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "source",
-            "type": "string"
-          },
-          {
-            "internalType": "bytes",
-            "name": "encryptedSecretsUrls",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint8",
-            "name": "donHostedSecretsSlotID",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint64",
-            "name": "donHostedSecretsVersion",
-            "type": "uint64"
-          },
-          {
-            "internalType": "string[]",
-            "name": "args",
-            "type": "string[]"
-          },
-          {
-            "internalType": "bytes[]",
-            "name": "bytesArgs",
-            "type": "bytes[]"
-          },
-          {
-            "internalType": "uint64",
-            "name": "subscriptionId",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint32",
-            "name": "gasLimit",
-            "type": "uint32"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "donID",
-            "type": "bytes32"
-          }
-        ],
-        "name": "depositPaymentWithTracking",
-        "outputs": [
-          {
-            "internalType": "bytes32",
-            "name": "requestId",
-            "type": "bytes32"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "requestId",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "bytes",
-            "name": "response",
-            "type": "bytes"
-          },
-          {
-            "internalType": "bytes",
-            "name": "err",
-            "type": "bytes"
-          }
-        ],
-        "name": "handleOracleFulfillment",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "s_lastError",
-        "outputs": [
-          {
-            "internalType": "bytes",
-            "name": "",
-            "type": "bytes"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "s_lastRequestId",
-        "outputs": [
-          {
-            "internalType": "bytes32",
-            "name": "",
-            "type": "bytes32"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [],
-        "name": "s_lastResponse",
-        "outputs": [
-          {
-            "internalType": "bytes",
-            "name": "",
-            "type": "bytes"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes32",
-            "name": "buyerAddress",
-            "type": "bytes32"
-          }
-        ],
-        "name": "transactionID",
-        "outputs": [
-          {
-            "internalType": "bytes32",
-            "name": "sellerAddress",
-            "type": "bytes32"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "_token",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "source",
-            "type": "string"
-          },
-          {
-            "internalType": "bytes",
-            "name": "encryptedSecretsUrls",
-            "type": "bytes"
-          },
-          {
-            "internalType": "uint8",
-            "name": "donHostedSecretsSlotID",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint64",
-            "name": "donHostedSecretsVersion",
-            "type": "uint64"
-          },
-          {
-            "internalType": "string[]",
-            "name": "args",
-            "type": "string[]"
-          },
-          {
-            "internalType": "bytes[]",
-            "name": "bytesArgs",
-            "type": "bytes[]"
-          },
-          {
-            "internalType": "uint64",
-            "name": "subscriptionId",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint32",
-            "name": "gasLimit",
-            "type": "uint32"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "donID",
-            "type": "bytes32"
-          }
-        ],
-        "name": "withdraw",
-        "outputs": [
-          {
-            "internalType": "bytes32",
-            "name": "requestId",
-            "type": "bytes32"
-          }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "stateMutability": "payable",
-        "type": "receive"
-      }
-    ]
   //const amount2 = ethers.utils.parseUnits(String(total), "mwei");
     //console.log("amount2",amount2);
     const payments = await new ethers.Contract(consumerAddress,abiPayments,signer);
@@ -713,7 +207,14 @@ const orderID = order.order.id;
 /*"0xc2132D05D31c914a87C6611C10748AEb04B58e8F", amount,*/
 console.log("this is where we throw");
 console.log("amount= ", amount)
-const paymentSuccessful = await payments.depositPaymentWithTracking("0xc2132D05D31c914a87C6611C10748AEb04B58e8F",amount,client,"0x",0,0,args,[],subscriptionId, gasLimit,"0x66756e2d706f6c79676f6e2d6d61696e6e65742d310000000000000000000000");
+const paymentSuccessful = await payments.depositPaymentWithTracking(amount,String(orderID),productID,/*client,*/"0x",0,0,args,[],subscriptionId, /*gasLimit,*/"0x66756e2d706f6c79676f6e2d6d61696e6e65742d310000000000000000000000");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+await sleep(40000).then(() => { console.log('World!'); });
+
 const responseBytes = await payments.s_lastResponse();
 const responseError = await payments.s_lastError();
 //const responseMaybe = await payments.
