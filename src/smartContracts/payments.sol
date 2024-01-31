@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-//note this is currently pseudocode until declared otherwise. Please do not use the function on the site. 
 pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -17,18 +16,14 @@ struct InputData {
 
 
 contract Payment2 is FunctionsClient, ConfirmedOwner {
-    address public escAcc;
-    uint256 public escBal;
-    uint256 public escAvailBal;
-    uint256 public escFee;
-    uint256 public totalItems = 0;
-    uint256 public totalConfirmed = 0;
-    uint256 public totalDisputed = 0;
-    address public _token = 0xc2132D05D31c914a87C6611C10748AEb04B58e8F;
-    uint32 public gasLimit = 300000;
-    string public sourceWithdraw = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\n\nconst orderId = args[0];\n\n// const productName= args[0];\n// const productdescription = args[1];\n// const productPrice= parseInt(args[2]);\n// const imageUrl=args[3];\n// const chainID = args[4];\n// const account1 = args[5];\n// const signature1 = args[6];\n// console.log(\"typeof(price)= \", typeof(productPrice));\n// const body_text = {\n//   //vendorAddress: account,\n//   name: productName,\n//   price: productPrice,\n//   description: productDescription,\n//   chainId: chainId,\n//   image: imageUrl\n// }\n\n//const signature = args[5];\n//const account = args[6];\n//const orderId= args[0];\n// const amount= parseInt(args[1]);\n// console.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markFulfilled\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    'Content-Type': 'application/json'//,\n    //'X-Signature':signature1,\n    //'X-Account':account1\n   },\n   data: {\n    'orderId': orderId\n   }\n  });\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n";
-    string public sourcedepositPaymentWithTracking = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\nconst orderId= args[0];\nconst amount= parseInt(args[1]);\nconsole.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markPaid\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n   },\n  data: {\"orderId\": orderId,\n  \"paymentAmount\" : amount}\n});\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n";
-    string public sourceMarkReceived = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\n\nconst orderId = args[0];\n\n// const productName= args[0];\n// const productdescription = args[1];\n// const productPrice= parseInt(args[2]);\n// const imageUrl=args[3];\n// const chainID = args[4];\n// const account1 = args[5];\n// const signature1 = args[6];\n// console.log(\"typeof(price)= \", typeof(productPrice));\n// const body_text = {\n//   //vendorAddress: account,\n//   name: productName,\n//   price: productPrice,\n//   description: productDescription,\n//   chainId: chainId,\n//   image: imageUrl\n// }\n\n//const signature = args[5];\n//const account = args[6];\n//const orderId= args[0];\n// const amount= parseInt(args[1]);\n// console.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markDelivered\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    'Content-Type': 'application/json'//,\n    //'X-Signature':signature1,\n    //'X-Account':account1\n   },\n   data: {\n    'orderId': orderId\n   }\n  });\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n";
+    address private escAcc;
+    uint256 private escFee;
+    uint256 private totalDisputed = 0;
+    address private _token = 0xc2132D05D31c914a87C6611C10748AEb04B58e8F;
+    uint32 private gasLimit = 300000;
+    string private sourceWithdraw = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\n\nconst orderId = args[0];\n\n// const productName= args[0];\n// const productdescription = args[1];\n// const productPrice= parseInt(args[2]);\n// const imageUrl=args[3];\n// const chainID = args[4];\n// const account1 = args[5];\n// const signature1 = args[6];\n// console.log(\"typeof(price)= \", typeof(productPrice));\n// const body_text = {\n//   //vendorAddress: account,\n//   name: productName,\n//   price: productPrice,\n//   description: productDescription,\n//   chainId: chainId,\n//   image: imageUrl\n// }\n\n//const signature = args[5];\n//const account = args[6];\n//const orderId= args[0];\n// const amount= parseInt(args[1]);\n// console.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markFulfilled\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    'Content-Type': 'application/json'//,\n    //'X-Signature':signature1,\n    //'X-Account':account1\n   },\n   data: {\n    'orderId': orderId\n   }\n  });\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n";
+    string private sourcedepositPaymentWithTracking = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\nconst orderId= args[0];\nconst amount= parseInt(args[1]);\nconsole.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markPaid\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    \"Content-Type\": \"application/json\",\n   },\n  data: {\"orderId\": orderId,\n  \"paymentAmount\" : amount}\n});\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n";
+    string private sourceMarkReceived = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\n\nconst orderId = args[0];\n\n// const productName= args[0];\n// const productdescription = args[1];\n// const productPrice= parseInt(args[2]);\n// const imageUrl=args[3];\n// const chainID = args[4];\n// const account1 = args[5];\n// const signature1 = args[6];\n// console.log(\"typeof(price)= \", typeof(productPrice));\n// const body_text = {\n//   //vendorAddress: account,\n//   name: productName,\n//   price: productPrice,\n//   description: productDescription,\n//   chainId: chainId,\n//   image: imageUrl\n// }\n\n//const signature = args[5];\n//const account = args[6];\n//const orderId= args[0];\n// const amount= parseInt(args[1]);\n// console.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/orders/markDelivered\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    'Content-Type': 'application/json'//,\n    //'X-Signature':signature1,\n    //'X-Account':account1\n   },\n   data: {\n    'orderId': orderId\n   }\n  });\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n";
 
     mapping(string => ItemStruct) public items;
     mapping(address => ItemStruct[]) private itemsOf;
@@ -54,7 +49,6 @@ contract Payment2 is FunctionsClient, ConfirmedOwner {
 
     struct ItemStruct {
         string itemId;
-        string purpose;
         uint256 amount;
         uint256 timestamp;
         address owner;
@@ -86,8 +80,6 @@ contract Payment2 is FunctionsClient, ConfirmedOwner {
         uint256 _escFee
     ) FunctionsClient(router) ConfirmedOwner(msg.sender) {        
         escAcc = msg.sender;
-        escBal = 0;
-        escAvailBal = 0;
         escFee = _escFee;
         }
 
@@ -113,26 +105,12 @@ bytes public s_lastError;
     function createItem(
         uint256 _amount,
         string memory itemID
-        // string memory source,
-        // bytes memory encryptedSecretsUrls,
-        // uint8 donHostedSecretsSlotID,
-        // uint64 donHostedSecretsVersion,
-        // string[] memory args,
-        // bytes[] memory bytesArgs,
-        // uint64 subscriptionId,
-        // uint32 gasLimit,
-        // bytes32 donID
-        //string calldata purpose
-    ) public returns (bool){//(bytes32 requestId) {
-        //require(bytes(purpose).length > 0, "Purpose cannot be empty");
-        //require(msg.value > 0 ether, "Item cannot be zero ethers");
 
-        //uint256 itemId = totalItems++;
+    ) public returns (bool){//(bytes32 requestId) {
         ItemStruct storage item = items[itemID];
         
 
         item.itemId = itemID;
-        //item.purpose = purpose;
         item.amount = _amount;
         item.timestamp = block.timestamp;
         item.owner = msg.sender;
@@ -141,7 +119,6 @@ bytes public s_lastError;
         itemsOf[msg.sender].push(item);
         ownerOf[itemID] = msg.sender;
         isAvailable[itemID] = Available.YES;
-        escBal += _amount;
 
         emit Action (
             itemID,
@@ -267,9 +244,9 @@ function assignInputData(
         string[] memory args,
         bytes[] memory bytesArgs,
         uint64 subscriptionId,
-        uint32 gasLimit,
+        uint32 GasLimit,
         bytes32 donID
-    ) internal returns (bytes32 requestId) {
+    ) private returns (bytes32 requestId) {
         FunctionsRequest.Request memory req;
         req.initializeRequestForInlineJavaScript(source);
         if (encryptedSecretsUrls.length > 0)
@@ -285,7 +262,7 @@ function assignInputData(
         s_lastRequestId = _sendRequest(
             req.encodeCBOR(),
             subscriptionId,
-            gasLimit,
+            GasLimit,
             donID
         );
         return s_lastRequestId;
