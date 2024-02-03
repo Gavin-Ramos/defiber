@@ -78,7 +78,7 @@ console.log(order?.shippingLabel)
     
     const data1 = await resp1.json();
     //console.log(data1.trackResponse.shipment[0].package[0].currentStatus.description);
-if(data1.trackResponse.shipment[0].package[0].currentStatus.description == "On the Way"){
+if(data1.trackResponse.shipment[0].package[0].currentStatus.description == "Delivered"){
   await client.order.update({
     where: {
       id
@@ -90,7 +90,7 @@ if(data1.trackResponse.shipment[0].package[0].currentStatus.description == "On t
 
   response.status(200).json({
     status: 200,
-    statusText: 'OK - OTW',
+    statusText: 'OK - Delivered',
   })}
   else{
     response.status(401).json({
