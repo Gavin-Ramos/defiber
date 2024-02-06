@@ -24,7 +24,7 @@ const abiAddProduct =  require("../../smartContracts/abi/abi/abiAddProduct.json"
 const paymentsAbi = require("../../smartContracts/abi/abi/payment2.json");
 //const ethers = require("ethers");
 
-const consumerAddress = "0xB41a92BbAdB9DCe8b22D12F287a3e40a4af98685";  // REPLACE this with your Functions consumer address
+const consumerAddress = "0x49810F4959b6AcEfA67f48c1e5409E821Df4c6e8";  // REPLACE this with your Functions consumer address
 const subscriptionId = 50; // REPLACE this with your subscription ID
 const routerAddress = "0xdc2AAF042Aeff2E68B3e8E33F19e4B9fA7C73F10";
 const linkTokenAddress = "0xb0897686c545045aFc77CF20eC7A532E3120E0F1";

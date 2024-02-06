@@ -78,7 +78,7 @@ console.log(order?.shippingLabel)
     
     const data1 = await resp1.json();
     //console.log(data1.trackResponse.shipment[0].package[0].currentStatus.description);
-if(data1.trackResponse.shipment[0].package[0].currentStatus.description == "Delivered"){
+if(data1.trackResponse.shipment[0].package[0].currentStatus.description == 'Delivered'){
   await client.order.update({
     where: {
       id
