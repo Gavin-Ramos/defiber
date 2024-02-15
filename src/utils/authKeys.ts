@@ -6,10 +6,10 @@ require("dotenv").config();
 export const hashKey = (key: string) => {
   const secret = process.env.SECRET_KEY!
   const hash = crypto.createHmac('sha256', secret)
-    .update(key)
-    .digest('hex')
-  console.log("hash == ", hash)
-  return hash
+    hash.update(key)
+  const  digested = hash.digest('hex')
+  console.log("hash == ", digested)
+  return digested
 }
 
 export const createKey = async () => {
