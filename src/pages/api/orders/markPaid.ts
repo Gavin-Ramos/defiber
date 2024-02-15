@@ -33,14 +33,14 @@ async function POST(
     return
   }
 
-  // const apiKeyFound = await verifyRequestKey(request)
+  const apiKeyFound = await verifyRequestKey(request)
 
-  // if (!apiKeyFound) {
-  //   return new Response('Unauthorized', {
-  //     status: 401,
-  //     statusText: 'Unauthorized',
-  //   })
-  // }
+  if (!apiKeyFound) {
+    return new Response('Unauthorized', {
+      status: 401,
+      statusText: 'Unauthorized',
+    })
+  }
 
   await client.order.update({
     where: {

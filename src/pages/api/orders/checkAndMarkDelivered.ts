@@ -15,7 +15,7 @@ async function POST(
       id
     }
   }) 
-console.log(order?.shippingLabel)
+// console.log(order?.shippingLabel)
   if (!order) {
     response.status(404).json({
       status: 404,
@@ -25,14 +25,15 @@ console.log(order?.shippingLabel)
     return
   }
 
-  // const apiKeyFound = await verifyRequestKey(request)
+  
+  const apiKeyFound = await verifyRequestKey(request)
 
-  // if (!apiKeyFound) {
-  //   return new Response('Unauthorized', {
-  //     status: 401,
-  //     statusText: 'Unauthorized',
-  //   })
-  // }
+  if (!apiKeyFound) {
+    return new Response('Unauthorized', {
+      status: 401,
+      statusText: 'Unauthorized',
+    })
+  }
 
     const formData = {
       grant_type: 'client_credentials'
@@ -93,8 +94,8 @@ if(data1.trackResponse.shipment[0].package[0].currentStatus.description == 'Deli
     statusText: 'OK - Delivered',
   })}
   else{
-    response.status(401).json({
-      status:401,
+    response.status(402).json({
+      status:402,
       statusText: 'not delivered yet'
     })
   }

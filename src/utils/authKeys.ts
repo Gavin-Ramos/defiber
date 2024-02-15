@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { client } from './client'
 import { NextApiRequest } from 'next'
-
+require("dotenv").config();
 // Creates a signed hash of key using secret key 
 export const hashKey = (key: string) => {
   const secret = process.env.SECRET_KEY!
