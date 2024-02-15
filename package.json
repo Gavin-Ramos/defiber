@@ -23,6 +23,8 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "chainlink": "^0.8.1",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
     "eth-sig-util": "^3.0.1",
     "ethers": "^6.9.0",
     "fs": "^0.0.1-security",
@@ -30,6 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "next": "14.0.3",
     "node-fetch": "^3.3.2",
+    "randombytes": "^2.1.0",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
     "react-datepicker": "^4.23.0",
@@ -43,6 +46,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.0",
     "@types/pretty": "^2.0.1",
