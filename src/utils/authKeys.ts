@@ -7,7 +7,7 @@ export const hashKey = (key: string) => {
   const secret = process.env.SECRET_KEY!
   const hash = crypto.createHmac('sha256', secret)
     .update(key)
-    .digest('hex')
+    .digest()//'hex')
   return hash
 }
 
