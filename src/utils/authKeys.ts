@@ -8,14 +8,14 @@ export const hashKey = (key: string) => {
   const hash = crypto.createHmac('sha256', secret)
     .update(key)
     .digest('hex')
-  console.log(hash)
+  console.log("hash == ", hash)
   return hash
 }
 
 export const createKey = async () => {
   // Randomly generate a key in hex format
   const key = crypto.randomBytes(32).toString('hex')
-  console.log(key);
+  console.log("key= ",key);
   // store hash in database
   const hash = hashKey(key)
   await client.authKey.create({
