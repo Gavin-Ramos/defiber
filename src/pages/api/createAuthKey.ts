@@ -20,7 +20,7 @@ export default async function handler(
     } else {
       try {
         const key = await createKey()
-        res.status(200).json(key)
+        res.status(200).json(String(key))
 
       } catch(e) {
         console.error(e)
