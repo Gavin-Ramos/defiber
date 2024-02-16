@@ -4,11 +4,14 @@ import { NextApiRequest } from 'next'
 require("dotenv").config();
 // Creates a signed hash of key using secret key 
 export const hashKey = (key: string) => {
-  console.log("key being passed in= ",key);
+  console.log("passed in key ",key, "typeof(key) passed in", typeof(key));
   const secret : string = process.env.SECRET_KEY!
+  console.log("secret= ", secret, "typeof(secret)", typeof(secret))
   const hash = crypto.createHmac('sha256', secret)
-    hash.update(key!)
-  const  digested : string = hash.digest('hex')
+  console.log("hash= ", hash, "typeof(hash)", typeof(hash))
+  const updatedHash =  hash.update(key)
+  console.log("updatedHash= ", updatedHash, "typeof(updatedHash)", typeof(updatedHash))
+  const  digested = updatedHash.digest('hex')
   console.log("hash == ", digested)
   return digested
 }
