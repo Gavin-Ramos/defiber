@@ -6,7 +6,7 @@ require("dotenv").config();
 export const hashKey = (key: string) => {
   const secret : string = process.env.SECRET_KEY!
   const hash = crypto.createHmac('sha256', secret)
-    hash.update(key)
+    hash.update(key!)
   const  digested : string = hash.digest('hex')
   console.log("hash == ", digested)
   return digested
