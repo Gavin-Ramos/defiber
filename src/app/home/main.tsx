@@ -24,7 +24,7 @@ const abiAddProduct =  require("../../smartContracts/abi/abi/abiAddProduct.json"
 const paymentsAbi = require("../../smartContracts/abi/abi/payment2.json");
 //const ethers = require("ethers");
 
-const consumerAddress = "0x49810F4959b6AcEfA67f48c1e5409E821Df4c6e8";  // REPLACE this with your Functions consumer address
+const consumerAddress = "0xbEEC2507620cCB726d06741733a83f59bba3b09E";  // REPLACE this with your Functions consumer address
 const subscriptionId = 50; // REPLACE this with your subscription ID
 const routerAddress = "0xdc2AAF042Aeff2E68B3e8E33F19e4B9fA7C73F10";
 const linkTokenAddress = "0xb0897686c545045aFc77CF20eC7A532E3120E0F1";
@@ -109,7 +109,7 @@ export const Main = () => {
               //const client = "// No authentication. demonstrate POST with data in body\n// callgraphql api: https://github.com/trevorblades/countries\n// docs: https://trevorblades.github.io/countries/queries/continent\n\n// make HTTP request\nconst productName= args[0];\nconst productdescription = args[1];\nconst productPrice= parseInt(args[2]);\nconst imageUrl=args[3];\nconst chainID = args[4];\nconst account1 = args[5];\nconst signature1 = args[6];\nconsole.log(\"typeof(price)= \", typeof(productPrice));\n// const body_text = {\n//   //vendorAddress: account,\n//   name: productName,\n//   price: productPrice,\n//   description: productDescription,\n//   chainId: chainId,\n//   image: imageUrl\n// }\n\n//const signature = args[5];\n//const account = args[6];\n//const orderId= args[0];\n// const amount= parseInt(args[1]);\n// console.log(\"amount= \",amount)\nconst url = \"https://defiber.io/api/products\";\n//console.log(`Get name, capital and currency for country code: ${countryCode}`);\nconsole.log(`HTTP POST Request to ${url}`);\nconst orderRequest = Functions.makeHttpRequest({\n  url: url,\n  method: \"POST\",\n  headers: {\n    'Content-Type': 'application/json',\n    'X-Signature':signature1,\n    'X-Account':account1\n   },\n   data: {\n    name: productName,\n    description: productdescription,\n    price: productPrice,\n    image: imageUrl,\n    chainId: chainID\n   }\n  });\n\n\n// Execute the API request (Promise)\nconst orderResponse = await orderRequest;\nconsole.log(\"orderResponse= \", orderResponse);\n//console.log(\"orderResponse.text()= \", orderResponse.text());\nif (orderResponse.error) {\n  console.error(\n    orderResponse.response\n      ? `${orderResponse.response.status},${orderResponse.response.statusText}`\n      : \"\"\n  );\n  throw Error(\"Request failed\");\n}\n\nconst orderData = orderResponse[\"data\"];\nconsole.log(\"orderData\", orderData[\"status\"]);\n//probably don't need [\"data\"][\"data\"]\n// if (!orderData || !orderData.country) {\n//   throw Error(`Make sure the country code \"${countryCode}\" exists`);\n// }\n\n//console.log(\"country response\", countryData);\n\n// result is in JSON object\n// const result = {\n//   name: countryData.country.name,\n//   capital: countryData.country.capital,\n//   currency: countryData.country.currency,\n// };\n\n// Use JSON.stringify() to convert from JSON object to JSON string\n// Finally, use the helper Functions.encodeString() to encode from string to bytes\nreturn Functions.encodeString(JSON.stringify(orderData));\n"
               //const args = [productName,productDescription,productPrice.toString(),imageUrl,chainId,account,signature];
               const _window: any = window;
-              const provider = new ethers.BrowserProvider(window.ethereum);
+              const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
               const _accounts = await _window.ethereum.request({
                 method: "eth_requestAccounts",
               })
@@ -123,7 +123,7 @@ export const Main = () => {
               console.log("signer= ", signer);
               //const total = 1;
               console.log("productName", productName);
-              const amount = ethers.parseUnits(String(productPrice), "mwei");
+              const amount = ethers.utils.parseUnits(String(productPrice), "mwei");
               console.log("amount= ", amount);
               const payments = await new ethers.Contract(consumerAddress,paymentsAbi,signer);
               
@@ -215,7 +215,7 @@ export const Main = () => {
             //console.log("amount2",amount2);
             //before implementing this you need some type of reducer or something to track if the approve function has already been called
             const _window: any = window;
-            const provider = new ethers.BrowserProvider(window.ethereum);
+            const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
             const _accounts = await _window.ethereum.request({
               method: "eth_requestAccounts",
             })
@@ -385,7 +385,7 @@ export const Main = () => {
                             //console.log("amount2",amount2);
                             //before implementing this you need some type of reducer or something to track if the approve function has already been called
                             const _window: any = window;
-                            const provider1 = new ethers.BrowserProvider(window.ethereum);
+                            const provider1 = new ethers.providers.Web3Provider(window.ethereum, "any");
                             const _accounts = await _window.ethereum.request({
                               method: "eth_requestAccounts",
                             })
@@ -398,7 +398,7 @@ export const Main = () => {
                             console.log("provider= ", provider1);
                             console.log("signer= ", signer);
                             const total = 1;
-                            const amount = ethers.parseUnits(String(total), "mwei");
+                            const amount = ethers.utils.parseUnits(String(total), "mwei");
                             console.log("amount= ", amount);
                             
                             const paymentsW = await new ethers.Contract(consumerAddress,paymentsAbi,signer);
@@ -535,7 +535,7 @@ export const Main = () => {
                             //console.log("amount2",amount2);
                             //before implementing this you need some type of reducer or something to track if the approve function has already been called
                             const _window: any = window;
-                            const provider2 = new ethers.BrowserProvider(window.ethereum);
+                            const provider2 = new ethers.providers.Web3Provider(window.ethereum, "any");
                             const _accounts = await _window.ethereum.request({
                               method: "eth_requestAccounts",
                             })
@@ -548,7 +548,7 @@ export const Main = () => {
                             console.log("provider= ", provider2);
                             console.log("signer= ", signer);
                             const total = 1;
-                            const amount = ethers.parseUnits(String(total), "mwei");
+                            const amount = ethers.utils.parseUnits(String(total), "mwei");
                             console.log("amount= ", amount);
                             
                             const paymentsW = await new ethers.Contract(consumerAddress,paymentsAbi,signer);
