@@ -27,7 +27,7 @@ import {decodeResult} from "@chainlink/functions-toolkit/dist/decodeResult.js";
 import {ReturnType} from "@chainlink/functions-toolkit/dist/types";
 import {ResponseListener} from "@chainlink/functions-toolkit/dist/ResponseListener";
 import {listenForResponseFromTransaction} from "@chainlink/functions-toolkit/dist/ResponseListener";
-import {SecretsManager} from "@chainlink/functions-toolkit/dist/SecretsManager";
+//import {SecretsManager} from "@chainlink/functions-toolkit/dist/SecretsManager";
 
 
 const functionsConsumerAbi = require("../smartContracts/abi/abi/payment2.json");
@@ -45,9 +45,9 @@ const gatewayUrls = [
 ];
 const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
 
-const privateKey = process.env.PRIVATE_KEY;
-console.log("PRIVATE_KEY= ",privateKey);
-const rpcUrl = process.env.POLYGON_RPC_URL; 
+// const privateKey = process.env.PRIVATE_KEY;
+// console.log("PRIVATE_KEY= ",privateKey);
+// const rpcUrl = process.env.POLYGON_RPC_URL; 
 
 
 
@@ -304,49 +304,49 @@ console.log("productId", order.order.summary[0].productId);
   //---------
     // First encrypt secrets and upload the encrypted secrets to the DON
   
-    const provider2 = await new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/ztQRx1-ILXqXE0JRpiIihcRDspxt2SCo");
-    console.log("provider2= ", provider2);
-  const wallet2 = await new ethers.Wallet("a83cf9322b88ed130d3f5592649a8ba6453542c0336ee442bf2d5d1ba8db1b25");
-  const signer2 = await wallet2.connect(provider2); 
+  //   const provider2 = await new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/ztQRx1-ILXqXE0JRpiIihcRDspxt2SCo");
+  //   console.log("provider2= ", provider2);
+  // const wallet2 = await new ethers.Wallet("a83cf9322b88ed130d3f5592649a8ba6453542c0336ee442bf2d5d1ba8db1b25");
+  // const signer2 = await wallet2.connect(provider2); 
   //console.log("signer2", signer2);
-  const secrets = { apiKey : process.env.SECRET_KEY };
-  //const source = require("./source.js");
-  //const source = String("test");
-  console.log("secrets=",secrets)
+  // const secrets = { apiKey : process.env.SECRET_KEY };
+  // //const source = require("./source.js");
+  // //const source = String("test");
+  // console.log("secrets=",secrets)
    
-  console.log("wallet2= ", wallet2);
-    console.log("signer2= ",signer2);
-    const secretsManager = new SecretsManager({
-      signer : signer2,//signer,
-      functionsRouterAddress: routerAddress,
-      donId : donId
-    });
-    console.log("it's not throwing here")
-    await secretsManager.initialize();
+  // console.log("wallet2= ", wallet2);
+  //   console.log("signer2= ",signer2);
+  //   const secretsManager = new SecretsManager({
+  //     signer : signer2,//signer,
+  //     functionsRouterAddress: routerAddress,
+  //     donId : donId
+  //   });
+  //   console.log("it's not throwing here")
+  //   await secretsManager.initialize();
   
-    // Encrypt secrets and upload to DON
-    const encryptedSecretsObj = await secretsManager.encryptSecrets(secrets);
+  //   // Encrypt secrets and upload to DON
+  //   const encryptedSecretsObj = await secretsManager.encryptSecrets(secrets);
   
-    console.log(
-      `Upload encrypted secret to gateways ${gatewayUrls}. slotId ${slotIdNumber}. Expiration in minutes: ${expirationTimeMinutes}`
-    );
-    // Upload secrets
-    const uploadResult = await secretsManager.uploadEncryptedSecretsToDON({
-      encryptedSecretsHexstring: encryptedSecretsObj.encryptedSecrets,
-      gatewayUrls: gatewayUrls,
-      slotId: slotIdNumber,
-      minutesUntilExpiration: expirationTimeMinutes,
-    });
+  //   console.log(
+  //     `Upload encrypted secret to gateways ${gatewayUrls}. slotId ${slotIdNumber}. Expiration in minutes: ${expirationTimeMinutes}`
+  //   );
+  //   // Upload secrets
+  //   const uploadResult = await secretsManager.uploadEncryptedSecretsToDON({
+  //     encryptedSecretsHexstring: encryptedSecretsObj.encryptedSecrets,
+  //     gatewayUrls: gatewayUrls,
+  //     slotId: slotIdNumber,
+  //     minutesUntilExpiration: expirationTimeMinutes,
+  //   });
   
-    if (!uploadResult.success)
-      throw new Error(`Encrypted secrets not uploaded to ${gatewayUrls}`);
+  //   if (!uploadResult.success)
+  //     throw new Error(`Encrypted secrets not uploaded to ${gatewayUrls}`);
   
-    console.log(
-      `\n✅ Secrets uploaded properly to gateways ${gatewayUrls}! Gateways response: `,
-      uploadResult
-    );
+  //   console.log(
+  //     `\n✅ Secrets uploaded properly to gateways ${gatewayUrls}! Gateways response: `,
+  //     uploadResult
+  //   );
   
-    const donHostedSecretsVersion = parseInt(uploadResult.version); // fetch the reference of the encrypted secrets
+  //   const donHostedSecretsVersion = parseInt(uploadResult.version); // fetch the reference of the encrypted secrets
   
   
   //---------
