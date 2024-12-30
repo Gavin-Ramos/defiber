@@ -15,7 +15,7 @@ defiber/
 
 ## Getting Started
 
-First, run the development server:
+After cloning and installing the dependencies, run the development server:
 
 ```bash
 npm run dev
