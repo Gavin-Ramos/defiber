@@ -29,8 +29,19 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Most important files
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The ```main.tsx``` file contains the logic for the main website. The ```cart.jsx``` file contains the logic to interact with the smart contract using ethers.js. The ```smartContracts``` folder contains the ```payments.sol``` file which is the smart contract that contains the logic on which the latienda site runs.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+\```
+defiber/
+├── src/
+     |--app
+│        ├── main.tsx
+│        └── cart.jsx
+├── smartContracts/
+│   ├── payments.sol
+│   └── abis
+\```
+
+
