@@ -33,7 +33,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The ```main.tsx``` file contains the logic for the main website. The ```cart.jsx``` file contains the logic to interact with the smart contract using ethers.js. The ```smartContracts``` folder contains the ```payments.sol``` file which is the smart contract that contains the logic on which the latienda site runs.
 
-\```
+```
 defiber/
 ├── src/
      |--app
@@ -42,6 +42,6 @@ defiber/
 ├── smartContracts/
 │   ├── payments.sol
 │   └── abis
-\```
+```
 
 
