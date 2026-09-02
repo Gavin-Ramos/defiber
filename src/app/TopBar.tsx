@@ -124,7 +124,7 @@ export const TopBar = () => {
       <Row sx={{maxWidth: '1000px', width: '100%'}} justify="space-between" align="center">
         <Row>
           <img
-            src="https://storage.googleapis.com/defiber-static/defiber%20Main%20Logo.png"
+            src="https://raw.githubusercontent.com/Gavin-Ramos/defiber/refs/heads/main/src/app/favicon.ico"
             onClick={() => {
               window.location.href = '/'
             }}
