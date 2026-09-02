@@ -1,6 +1,6 @@
 ## Purpose
 
-This website was built as part of the 2023 Chainlink Hackathon [2023 Chainlink Hackathon](https://devpost.com/software/defiber)
+This website was built as part of the [2023 Chainlink Hackathon](https://devpost.com/software/defiber)
 
 ## Most important files
 
